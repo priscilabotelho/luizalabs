@@ -19,7 +19,7 @@ resource "google_container_cluster" "priscila_cluster" {
   name                     = sensitive("${var.project_id}-gke")
   location                 = var.region
   remove_default_node_pool = true
-  initial_node_count       = 1
+  initial_node_count       = 1  # Reduzido para o mínimo necessário
   network                  = google_compute_network.vpc.name
   subnetwork               = google_compute_subnetwork.subnet.name
 
@@ -30,7 +30,7 @@ resource "google_container_node_pool" "nodes_primarios" {
   name       = "${google_container_cluster.priscila_cluster.name}-node-pool"
   location   = var.region
   cluster    = google_container_cluster.priscila_cluster.name
-  node_count = var.gke_num_nodes
+  node_count = var.gke_num_nodes  # Reduzido para o mínimo necessário
 
   node_config {
     oauth_scopes = [
@@ -42,7 +42,7 @@ resource "google_container_node_pool" "nodes_primarios" {
       env = sensitive(var.project_id)
     }
 
-    machine_type = "e2-standard-2"
+    machine_type = "e2-micro"
     tags         = ["gke-node", sensitive("${var.project_id}-gke")]
     metadata = {
       disable-legacy-endpoints = "true"
