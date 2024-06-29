@@ -1,22 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: hello-world-deployment
-    labels:
-        app: myapp
-        type: front-end
+  name: helloworld-deployment
 spec:
-    template: 
-        metadata:
-            name: mmyapp-pod
-            labels: 
-                app: myapp
-                tipo: front-end
-        spec:
-            containers:
-            - name: nginx-container
-              image: nginx
-    replicas: 3
-    selector:
-        matchLabels:
-            tipo: front-end
+  replicas: 3
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
