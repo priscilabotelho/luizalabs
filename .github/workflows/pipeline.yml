@@ -12,16 +12,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    ##permissions:
-      ##contents: 'read'
-      ##id-token: 'write'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Login to GCP
-      - uses: google-github-actions/setup-gcloud@v1
+      - name: Login to GCP
+        uses: google-github-actions/setup-gcloud@v1
         with:
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
