@@ -1,7 +1,3 @@
-variable "credentials_file" {
-  type = string
-}
-
 variable "project_id" {
   description = "project id"
 }
