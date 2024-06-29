@@ -1,0 +1,64 @@
+name: Deploy HelloWorld Application to GKE
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.1.0
+
+      # Login to GCP
+      - uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        if: github.event_name == 'push'
+        run: terraform apply -auto-approve tfplan
+
+      - name: Terraform Output
+        run: terraform output
+
+  kubectl_deploy:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ github.workspace }}/kubeconfig.yaml
+
+      - name: Deploy HelloWorld Application
+        env:
+          KUBECONFIG: ${{ github.workspace }}/kubeconfig.yaml
+        run: |
+          kubectl apply -f deployment.yaml
