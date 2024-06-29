@@ -6,6 +6,10 @@ variable "project" {
   type = string
 }
 
+variable "project_id" {
+  description = "project id"
+}
+
 variable "region" {
-  type = string
+  description = "region"
 }

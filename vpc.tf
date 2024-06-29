@@ -1,11 +1,3 @@
-variable "project_id" {
-  description = "project id"
-}
-
-variable "region" {
-  description = "region"
-}
-
 provider "google" {
   credentials = file(var.credentials_file)
   project     = var.project
