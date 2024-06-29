@@ -12,7 +12,7 @@ variable "region" {
 
 provider "google" {
   credentials = file(var.credentials_file)
-  project     = var.project
+  ##project     = var.project
   region      = var.region
 }
 
