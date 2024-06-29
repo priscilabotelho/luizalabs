@@ -11,7 +11,7 @@ variable "gke_password" {
 
 variable "gke_num_nodes" {
   description = "Número de nodes para o cluster"
-  default     = 2
+  default     = 1
 }
 
 # Cluster GKE
