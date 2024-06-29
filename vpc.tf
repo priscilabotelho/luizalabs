@@ -1,7 +1,18 @@
+variable "credentials_file" {
+  type = string
+}
+
+variable "project_id" {
+  description = "project id"
+}
+
+variable "region" {
+  description = "region"
+}
+
 provider "google" {
-  credentials = file(var.credentials_file)
-  project     = var.project
-  region      = var.region
+  project = var.project_id
+  region  = var.region
 }
 
 # VPC
